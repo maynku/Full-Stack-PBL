@@ -1,20 +1,22 @@
 const express=require('express');
 const Problem = require('../models/problem');
-const prolemRouter=express.Router();
+const ProblemRouter=express.Router();
 const adminMiddleware=require('../middleware/adminMiddleware');
+const{createProblem,updateProblem,deleteProblem,getallProblem,getProblembyid,solvedAllProblemByuser}=require('../controllers/UserProblem')
 
-
+const userMiddleware=require('../middleware/userMiddleware');
 
 //create admin acess
 ProblemRouter.post("/create",adminMiddleware,createProblem);
-//update admin acess only
-ProblemRouter.patch  ("/update/:id",adminMiddleware,updateProblem);
-//delete admin acess only
+// //update admin acess only
+ProblemRouter.put  ("/update/:id",adminMiddleware,updateProblem);
+// //delete admin acess only
 ProblemRouter.delete("/delete/:id",adminMiddleware,deleteProblem);
 
 
-//fetch
-ProblemRouter.get("/",getallProblem);
-ProblemRouter.get("/:id",getProblembyid);
-ProblemRouter.get("/user",solvedAllProblemByuser);
+// //fetch
+ ProblemRouter.get("/",userMiddleware,getallProblem);
+ ProblemRouter.get("/:id",userMiddleware,getProblembyid);
+ ProblemRouter.get("/user",userMiddleware,solvedAllProblemByuser);
 
+module.exports=ProblemRouter;
